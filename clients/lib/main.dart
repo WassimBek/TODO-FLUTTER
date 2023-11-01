@@ -14,8 +14,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'TU-DO',
-      home:  MyHomePage(),
+      title: 'TO-DO',
+      home: MyHomePage(),
     );
   }
 }
