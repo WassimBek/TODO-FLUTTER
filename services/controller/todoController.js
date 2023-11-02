@@ -49,7 +49,7 @@ module.exports.update_task = (req  , res) => {
             fs.writeFileSync(path.resolve(__dirname , '../model/db.json') , JSON.stringify(data))
             return res.status(200).json({message : 'update successfully'})
         }else {
-            return res.status(404).json({failedUpdateTask : 'task no exist'})
+            return res.status(404).json({failedUpdate : 'task no exist'})
         }
     } catch (error) {
         return res.status(404).json({failedUpdateTask : error})
@@ -73,7 +73,7 @@ module.exports.delete_single = (req , res) => {
             fs.writeFileSync(path.resolve(__dirname , '../model/db.json') , JSON.stringify(data))
             return res.status(200).json({message : 'delete single successfully'})
         } else {
-            return res.status(404).json({failedUpdateTask : 'task no exist'})
+            return res.status(404).json({failedDelete : 'task no exist'})
         }
     } catch (error) {
         return res.status(404).json({failedDeleteTask : error})

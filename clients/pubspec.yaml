@@ -37,6 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   http: ^1.1.0
   get: ^4.6.6
+  flutter_slidable: ^3.0.1
 
 dev_dependencies:
   flutter_test:
