@@ -1,18 +1,66 @@
+import 'package:clients/controller/addData.dart';
+import 'package:clients/view/AddTaskPage.dart';
 import 'package:flutter/material.dart';
 
-class DefaultPage extends StatelessWidget {
+class DefaultPage extends StatefulWidget {
   const DefaultPage({super.key});
 
   @override
+  State<DefaultPage> createState() => _DefaultPageState();
+}
+
+class _DefaultPageState extends State<DefaultPage> {
+  @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height - 88,
-          color: const Color(0xff2b2b2a),
-        ),
-      ],
+    return FutureBuilder(
+      future: FetchingData().getTask('/task', context),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        }
+        if (snapshot.hasData && snapshot.data.length != 0) {
+          return ListView.builder(
+            physics: BouncingScrollPhysics(),
+            itemCount: snapshot.data.length,
+            itemBuilder: (context, index) => Center(
+              child: Card(
+                color: Color(0xff3a3b3b),
+                elevation: 0,
+                child: ListTile(
+                  title: Text(
+                    snapshot.data[index]['title'],
+                    style: TextStyle(
+                      color: Colors.white54,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  subtitle: Text(
+                    snapshot.data[index]['description'],
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+        } else {
+          return Center(
+              child: Text(
+            "No Tasks Yet ",
+            style: TextStyle(
+              color: Colors.white60,
+              fontSize: 40,
+            ),
+          ));
+        }
+      },
     );
   }
 }

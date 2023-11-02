@@ -12,8 +12,9 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xff2a2b2b),
       appBar: MyAppBar('TODO APP'),
-      body: DefaultPage() ,
+      body: DefaultPage(),
       floatingActionButton: MyFloatingButton(),
     );
   }

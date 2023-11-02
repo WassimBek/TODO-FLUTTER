@@ -1,9 +1,12 @@
 import 'package:clients/components/Sections/appBar.dart';
 import 'package:clients/components/textField.dart';
+import 'package:clients/controller/addData.dart';
 import 'package:flutter/material.dart';
 
 class AddingTask extends StatelessWidget {
-  const AddingTask({super.key});
+  AddingTask({super.key});
+  String? titleData = '';
+  String? descriptionData = '';
 
   @override
   Widget build(BuildContext context) {
@@ -13,12 +16,24 @@ class AddingTask extends StatelessWidget {
       body: ListView(
         padding: EdgeInsets.all(20),
         children: [
-          MyFormField(text: 'title'),
           MyFormField(
-            text: 'Description',
-            line: 5,
+            text: 'title',
+            onChange: (title) {
+              titleData = title;
+            },
           ),
-          ElevatedButton(onPressed: () {}, child: Text("Submit"))
+          MyFormField(
+              text: 'Description',
+              line: 5,
+              onChange: (description) {
+                descriptionData = description;
+              }),
+          ElevatedButton(
+              onPressed: () {
+                FetchingData()
+                    .addTask("/add/task", titleData, descriptionData, context);
+              },
+              child: const Text("Submit"))
         ],
       ),
     );

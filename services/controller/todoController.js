@@ -4,7 +4,7 @@ const path = require('path')
 const data = JSON.parse(fs.readFileSync(path.resolve(__dirname , '../model/db.json')))
 
 module.exports.get_all = (req , res) => {
-    return res.status(200).json({data : data.data})
+    return res.status(200).json(data)
 }
 
 module.exports.get_single = (req , res) => {
@@ -29,7 +29,7 @@ module.exports.add_task = (req , res) => {
             fs.writeFileSync(path.resolve(__dirname , '../model/db.json') , JSON.stringify(data))
             return res.status(200).json({data : 'create done !'})
         }else {
-            return res.status(404).json({required : 'all field are required'})
+            return res.status(404).json({message : 'all field are required'})
         }
     } catch (error) {
         return res.status(404).json({failedCreate : error})
