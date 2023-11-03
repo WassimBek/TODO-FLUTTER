@@ -1,14 +1,13 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:clients/view/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-class FetchingData extends GetxController {
-  String baseUrl = "http:[your ip adress]:[port using]";
+String baseUrl = "http://[your ip adress]:[port using]";
 
+class GetRequest {
   Future<dynamic> getTask(String path, BuildContext context) async {
     try {
       var url = Uri.parse(baseUrl + path);
@@ -17,7 +16,7 @@ class FetchingData extends GetxController {
         var body = json.decode(response.body);
         return body['data'];
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('Error not getting data'),
         ));
       }
@@ -25,7 +24,9 @@ class FetchingData extends GetxController {
       print('last exception $e');
     }
   }
+}
 
+class PostRequest {
   Future<dynamic> addTask(String path, String? title, String? description,
       BuildContext context) async {
     try {
@@ -33,7 +34,7 @@ class FetchingData extends GetxController {
         "title": title,
         "description": description,
       };
-      var url = Uri.parse(baseUrl + path);
+      Uri url = Uri.parse(baseUrl + path);
       var response = await http.post(
         url,
         headers: {"Content-Type": "application/json"},
@@ -43,7 +44,7 @@ class FetchingData extends GetxController {
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(jsonDec["data"])));
-        Get.to(() => MyHomePage());
+        Get.offAll(() => const MyHomePage());
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(jsonDec["message"]),
@@ -53,7 +54,9 @@ class FetchingData extends GetxController {
       print("Error of sending $e");
     }
   }
+}
 
+class PutRequest {
   Future<dynamic> updateData(
       String title, String description, String path, context) async {
     try {
@@ -71,7 +74,7 @@ class FetchingData extends GetxController {
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(dataDecode.message)));
-        Get.to(() => MyHomePage());
+        Get.offAll(() => const MyHomePage());
       } else {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(dataDecode.failedUpdate)));
@@ -80,7 +83,9 @@ class FetchingData extends GetxController {
       print("Server Error $e");
     }
   }
+}
 
+class DeleteRequest {
   Future<dynamic> deleteTask(String path, context) async {
     try {
       var url = Uri.parse(baseUrl + path);
@@ -89,6 +94,7 @@ class FetchingData extends GetxController {
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(dataDecode.message)));
+        Get.offAll(() => MyHomePage());
       } else {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(dataDecode.failedDelete)));
