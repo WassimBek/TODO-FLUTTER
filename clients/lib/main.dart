@@ -1,3 +1,5 @@
+import 'package:clients/view/AddTaskPage.dart';
+import 'package:clients/view/updateTask.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -12,10 +14,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const GetMaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'TO-DO',
-      home: MyHomePage(),
+      initialRoute: "/Home",
+      getPages: [
+        GetPage(name: "/Home", page: () => MyHomePage()),
+        GetPage(name: "/Add", page: () => AddingTask()) ,
+        GetPage(name: "/update", page: () => MyUpdatePage())
+      ],
     );
   }
 }

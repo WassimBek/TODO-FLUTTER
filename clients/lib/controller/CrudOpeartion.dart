@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:clients/view/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -44,7 +42,7 @@ class PostRequest {
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(jsonDec["data"])));
-        Get.offAll(() => const MyHomePage());
+        Get.offAllNamed("/Home");
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(jsonDec["message"]),
@@ -58,7 +56,7 @@ class PostRequest {
 
 class PutRequest {
   Future<dynamic> updateData(
-      String title, String description, String path, context) async {
+      String path, String title, String description, context) async {
     try {
       var body = {
         "title": title,
@@ -73,8 +71,8 @@ class PutRequest {
       var dataDecode = json.decode(response.body);
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(dataDecode.message)));
-        Get.offAll(() => const MyHomePage());
+            .showSnackBar(SnackBar(content: Text(dataDecode['message'])));
+        Get.offAllNamed("/Home");
       } else {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(dataDecode.failedUpdate)));
@@ -94,7 +92,7 @@ class DeleteRequest {
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(dataDecode.message)));
-        Get.offAll(() => MyHomePage());
+        Get.offAllNamed("/Home");
       } else {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(dataDecode.failedDelete)));

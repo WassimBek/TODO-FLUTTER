@@ -1,14 +1,28 @@
 import 'package:clients/controller/CrudOpeartion.dart';
+import 'package:clients/view/updateTask.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 
-class DefaultPage extends StatelessWidget {
+class DefaultPage extends StatefulWidget {
   DefaultPage({super.key});
+
+  @override
+  State<DefaultPage> createState() => _DefaultPageState();
+}
+
+class _DefaultPageState extends State<DefaultPage> {
+  late Future<dynamic> futureData;
+  @override
+  void initState() {
+    futureData = GetRequest().getTask('/task', context);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: GetRequest().getTask('/task', context),
+      future: futureData,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -25,7 +39,13 @@ class DefaultPage extends StatelessWidget {
                 startActionPane:
                     ActionPane(motion: const StretchMotion(), children: [
                   SlidableAction(
-                    onPressed: (context) {},
+                    onPressed: (context) {
+                      Get.to(() => MyUpdatePage(
+                            prevTitle: snapshot.data[index]['title'],
+                            prevDescription: snapshot.data[index]['description'],
+                            id: snapshot.data[index]['id'],
+                          ));
+                    },
                     label: "Upadte",
                   ),
                 ]),
@@ -39,6 +59,9 @@ class DefaultPage extends StatelessWidget {
                             '/delete/task/' +
                                 snapshot.data[index]['id'].toString(),
                             context);
+                        setState(() {
+                          futureData = GetRequest().getTask("/task", context);
+                        });
                       })
                 ]),
                 child: Card(
