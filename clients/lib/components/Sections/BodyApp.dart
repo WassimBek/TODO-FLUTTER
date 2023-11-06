@@ -41,9 +41,10 @@ class _DefaultPageState extends State<DefaultPage> {
                   SlidableAction(
                     onPressed: (context) {
                       Get.to(() => MyUpdatePage(
-                            prevTitle: snapshot.data[index]['title'],
-                            prevDescription: snapshot.data[index]['description'],
-                            id: snapshot.data[index]['id'],
+                            prevTitle: snapshot.data[index]['Title'],
+                            prevDescription: snapshot.data[index]
+                                ['Description'],
+                            id: snapshot.data[index]['_id'],
                           ));
                     },
                     label: "Upadte",
@@ -54,13 +55,13 @@ class _DefaultPageState extends State<DefaultPage> {
                   SlidableAction(
                       backgroundColor: Colors.red,
                       icon: Icons.delete,
-                      onPressed: (context) {
-                        DeleteRequest().deleteTask(
+                      onPressed: (context) async {
+                        await DeleteRequest().deleteTask(
                             '/delete/task/' +
-                                snapshot.data[index]['id'].toString(),
+                                snapshot.data[index]['_id'].toString(),
                             context);
                         setState(() {
-                          futureData = GetRequest().getTask("/task", context);
+                          snapshot.data.removeAt(index);
                         });
                       })
                 ]),
@@ -69,7 +70,7 @@ class _DefaultPageState extends State<DefaultPage> {
                   elevation: 0,
                   child: ListTile(
                     title: Text(
-                      snapshot.data[index]['title'],
+                      snapshot.data[index]['Title'],
                       style: const TextStyle(
                         color: Colors.white54,
                         fontSize: 20,
@@ -77,7 +78,7 @@ class _DefaultPageState extends State<DefaultPage> {
                       ),
                     ),
                     subtitle: Text(
-                      snapshot.data[index]['description'],
+                      snapshot.data[index]['Description'],
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 18,

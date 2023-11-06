@@ -58,6 +58,7 @@ class PutRequest {
   Future<dynamic> updateData(
       String path, String title, String description, context) async {
     try {
+      print(path);
       var body = {
         "title": title,
         "description": description,
@@ -71,11 +72,11 @@ class PutRequest {
       var dataDecode = json.decode(response.body);
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(dataDecode['message'])));
+            .showSnackBar(SnackBar(content: Text(dataDecode['data'])));
         Get.offAllNamed("/Home");
       } else {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(dataDecode.failedUpdate)));
+            .showSnackBar(SnackBar(content: Text(dataDecode["message"])));
       }
     } catch (e) {
       print("Server Error $e");
@@ -89,13 +90,14 @@ class DeleteRequest {
       var url = Uri.parse(baseUrl + path);
       var response = await http.delete(url);
       var dataDecode = json.decode(response.body);
+      print(response.statusCode);
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(dataDecode.message)));
-        Get.offAllNamed("/Home");
+            .showSnackBar(SnackBar(content: Text(dataDecode['data'])));
+    
       } else {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(dataDecode.failedDelete)));
+            .showSnackBar(SnackBar(content: Text(dataDecode['message'])));
       }
     } catch (e) {
       print("Error Server $e");

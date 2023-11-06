@@ -6,11 +6,9 @@ import '../components/textField.dart';
 
 class MyUpdatePage extends StatelessWidget {
   MyUpdatePage({super.key, this.prevTitle, this.prevDescription, this.id});
-  String titleData = '';
-  String descriptionData = '';
-  final String? prevTitle;
-  final String? prevDescription;
-  final int? id;
+  String? prevTitle;
+  String? prevDescription;
+  final String? id;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +22,7 @@ class MyUpdatePage extends StatelessWidget {
             value: prevTitle,
             text: 'title',
             onChange: (title) {
-              titleData = title!;
+              prevTitle = title!;
             },
           ),
           MyFormField(
@@ -32,12 +30,12 @@ class MyUpdatePage extends StatelessWidget {
               text: 'Description',
               line: 5,
               onChange: (description) {
-                descriptionData = description!;
+                prevDescription = description!;
               }),
           ElevatedButton(
               onPressed: () {
                 PutRequest().updateData("/update/task/" + id.toString(),
-                    titleData, descriptionData, context);
+                    prevTitle!, prevDescription!, context);
               },
               child: const Text("Update"))
         ],

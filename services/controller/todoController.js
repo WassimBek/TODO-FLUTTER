@@ -5,7 +5,7 @@ module.exports.get_all = async(req, res) => {
         const allTasks = await Task.find()
         return res.status(200).json({data : allTasks});
     } catch (error) {
-        return res.status(500).json({error : error.message})
+        return res.status(500).json({message : error.message})
     }
 }
 
@@ -16,10 +16,10 @@ module.exports.get_single = async (req, res) => {
     if (findTask !== null) {
       return res.status(200).json({ data: findTask});
     } else {
-      return res.status(404).json({ failedGetSingle: 'Task does not exist' });
+      return res.status(404).json({ message: 'Task not exist' });
     }
   } catch (error) {
-    return res.status(500).json({ failedGetSingle: error.message });
+    return res.status(500).json({ message : error.message });
   }
 }
 
@@ -27,14 +27,11 @@ module.exports.add_task = async (req, res) => {
   try {
     const { title, description } = req.body;
     const newTask = await Task.create({ Title: title, Description: description });
-    return res.status(201).json({ data: newTask._id });
+    return res.status(200).json({data : 'Create task done!'});
   } catch (error) {
-    return res.status(500).json({ failedCreate: error.message });
+    return res.status(500).json({ message : error.message });
   }
 }
-
-
-
 
 module.exports.update_task = async(req  , res) => {
     try {
@@ -46,12 +43,12 @@ module.exports.update_task = async(req  , res) => {
             {new : true}
         )
         if (findAndUpdate) {
-            return res.status(200).json({task : findAndUpdate})
+            return res.status(200).json({data : "update done !"})
         }else {
-            return res.status(404).json({failedUpdate : 'task no exist'})
+            return res.status(404).json({message : 'task no exist'})
         }
     } catch (error) {
-        return res.status(500).json({failedUpdateTask : error.message})
+        return res.status(500).json({message : error.message})
     }
 }
 
@@ -60,7 +57,7 @@ module.exports.delete_all = async(req , res) => {
     try {
         const result =await Task.deleteMany({})
         if (result.deletedCount > 0)
-            return res.status(200).json({message : 'delete all task done!'})
+            return res.status(200).json({data : 'delete all task done!'})
         else 
             return res.status(404).json({message : 'No data found'})
     } catch (error) {
@@ -72,9 +69,13 @@ module.exports.delete_all = async(req , res) => {
 module.exports.delete_single = async(req , res) => {
     try {
         const {id} = req.params
-        await Task.findByIdAndDelete(id)
-        return res.status(200).json({message : 'delete single successfully'})
+        const findTask = await Task.findByIdAndDelete(id)
+        if (findTask) {
+          return res.status(200).json({data : 'delete single successfully'})
+        }else {
+          return res.status(404).json({message : 'Task not foud'})
+        }
     } catch (error) {
-        return res.status(404).json({failedDeleteTask : error.message})
+        return res.status(500).json({message : error.message})
     }
 }
