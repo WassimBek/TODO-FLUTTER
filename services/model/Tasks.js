@@ -3,11 +3,11 @@ const mongoos = require('mongoose')
 const tasksSchema = new mongoos.Schema({
     Title : {
         type : String ,
-        required : [true , 'this field is required'],
+        required : [true , 'Title field is required'],
     },
     Description : {
         type : String ,
-        required : [true , 'this field is required']
+        required : [true , 'Description field is required']
     }
 })
 
